@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebSite - Categorias</title>
+<style>
+:root{--roxo:#3e18e8;--roxo2:#7116e8;--fundo:#f3f3f8;--texto:#252333}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--fundo);color:var(--texto)}
+header{height:62px;background:#17151d;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 max(5%,calc((100% - 1120px)/2));}
+.logo{font-weight:800;font-size:20px;letter-spacing:.2px}.logo span{background:white;color:#17151d;border-radius:5px;padding:3px 5px;margin-right:7px}
+nav{display:flex;gap:24px}nav a{color:#eee;text-decoration:none;font-size:14px;cursor:pointer}nav a:hover{text-decoration:underline}
+.hero{padding:37px 6%;color:white;background:linear-gradient(115deg,#2416e8,#6515e9);min-height:145px}
+.wrap{max-width:1120px;margin:auto}.crumb{font-size:13px;opacity:.85;margin-bottom:9px}.hero h1{margin:0 0 7px;font-size:clamp(27px,4vw,38px)}.hero p{margin:0;color:#e9e5ff}
+main{max-width:1120px;margin:30px auto;padding:0 22px 45px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{background:#fff;border:1px solid #e8e6ef;border-radius:7px;overflow:hidden;box-shadow:0 2px 7px #21174a0b;transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 7px 18px #21174a16}
+.card-image{height:172px;background:#f8f8fb;display:flex;align-items:center;justify-content:center;padding:15px}
+.card-image img{width:100%;height:100%;object-fit:contain;display:block}
+.placeholder{font-size:38px;color:#aaa}
+.card-body{padding:15px}.card h3{font-size:16px;margin:0 0 7px}.muted{color:#777;font-size:13px;margin:0 0 15px}
+.card-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}
+button{font:inherit;cursor:pointer;border:0;border-radius:5px;padding:9px 12px}
+.primary{background:var(--roxo);color:white;font-size:12px;font-weight:bold}.primary:hover{background:#2d0fc0}
+.secondary{background:transparent;border:1px solid #bdb8d2;color:#3b3650}
+.price{font-weight:700;font-size:18px;margin-top:12px}
+.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.product .card-image{height:220px}
+.back{margin-top:22px}
+.empty{padding:28px;background:white;border-radius:8px;color:#666}
+footer{text-align:center;padding:20px;color:#777;font-size:12px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){header{padding:0 16px}nav{gap:12px}nav a{font-size:12px}.hero{padding:28px 20px}.grid,.product-grid{grid-template-columns:1fr 1fr;gap:10px}main{padding:0 12px 30px}.card-image{height:135px}.product .card-image{height:160px}.card-body{padding:11px}.card-actions{align-items:flex-start;flex-direction:column}.price{font-size:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>W</span>WebSite</div>
+  <nav><a id="navCategorias">Categorias</a><a id="navAdmin">Área administrativa</a></nav>
+</header>
+<section class="hero"><div class="wrap">
+  <div class="crumb" id="crumb">Início</div>
+  <h1 id="titulo">Nossas categorias</h1>
+  <p id="subtitulo">Escolha uma categoria para ver os produtos</p>
+</div></section>
+<main><div id="conteudo" class="grid"></div><button id="voltar" class="secondary back" hidden>← Voltar às categorias</button></main>
+<footer>Projeto de loja virtual • HTML, CSS e JavaScript</footer>
+<script>
+// Fotos reais de produtos hospedadas online. É necessário estar conectado à internet.
+const fotos = {
+  cocaLata: 'https://images.unsplash.com/photo-1690988109029-aa2377d08b12?auto=format&fit=crop&w=800&q=85',
+  cocaGarrafa: 'https://m.media-amazon.com/images/I/71BtKKXrGQL.jpg',
+  agua: 'https://cdn3.didevelop.com/public/cdn/533_09156af830eb29605c45534bf0cb48a3.jpg',
+  bebida: 'https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=800&q=85',
+  flask: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=85',
+  doces: 'https://images.unsplash.com/photo-1548907040-4d42f8b7b1e5?auto=format&fit=crop&w=800&q=85',
+  chocolate: 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=800&q=85'
+};
+const categorias = [
+ {id:'coca',nome:'Coca Cola',tipo:'Latas e garrafas',imagem:fotos.cocaLata,produtos:[
+  {nome:'Coca 350ml',preco:5,imagem:fotos.cocaLata},
+  {nome:'Coca 2L',preco:10,imagem:fotos.cocaGarrafa}
+ ]},
+ {id:'bebidas',nome:'Bebidas',tipo:'Bebidas variadas',imagem:fotos.agua,produtos:[
+  {nome:'Água mineral 500ml',preco:3,imagem:fotos.agua},
+  {nome:'Refrigerante',preco:7,imagem:fotos.bebida}
+ ]},
+ {id:'flask',nome:'Flask',tipo:'Garrafas e bebidas',imagem:fotos.flask,produtos:[
+  {nome:'Garrafa',preco:12,imagem:fotos.flask},
+  {nome:'Água mineral',preco:3,imagem:fotos.agua}
+ ]},
+ {id:'bomboniere',nome:'Bomboniere',tipo:'Doces e chocolates',imagem:fotos.doces,produtos:[
+  {nome:'Doces sortidos',preco:2,imagem:fotos.doces},
+  {nome:'Chocolate',preco:6,imagem:fotos.chocolate}
+ ]}
+];
+const conteudo=document.getElementById('conteudo'), titulo=document.getElementById('titulo'), subtitulo=document.getElementById('subtitulo'), crumb=document.getElementById('crumb'), voltar=document.getElementById('voltar');
+function dinheiro(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function imagem(src,alt){return `<img src="${src}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/400x300/f8f8fb/777?text=Imagem+indisponivel'">`}
+function mostrarCategorias(){
+ titulo.textContent='Nossas categorias';subtitulo.textContent='Escolha uma categoria para ver os produtos';crumb.textContent='Início';voltar.hidden=true;
+ conteudo.className='grid';conteudo.innerHTML=categorias.map(c=>`<article class="card"><div class="card-image">${imagem(c.imagem,c.nome)}</div><div class="card-body"><h3>${c.nome}</h3><p class="muted">${c.tipo}</p><div class="card-actions"><button class="primary" onclick="mostrarProdutos('${c.id}')">Ver produtos</button><span class="muted">${c.produtos.length} produtos</span></div></div></article>`).join('');
+}
+function mostrarProdutos(id){
+ const c=categorias.find(x=>x.id===id);if(!c)return;
+ titulo.textContent=c.nome;subtitulo.textContent='Produtos disponíveis nesta categoria';crumb.textContent='Categorias  ›  '+c.nome;voltar.hidden=false;
+ conteudo.className='grid product-grid';conteudo.innerHTML=c.produtos.map(p=>`<article class="card product"><div class="card-image">${imagem(p.imagem,p.nome)}</div><div class="card-body"><h3>${p.nome}</h3><div class="price">${dinheiro(p.preco)}</div></div></article>`).join('');
+}
+document.getElementById('navCategorias').addEventListener('click',mostrarCategorias);
+document.getElementById('navAdmin').addEventListener('click',()=>alert('Área administrativa: esta versão é demonstrativa.'));
+voltar.addEventListener('click',mostrarCategorias);
+mostrarCategorias();
+</script>
+</body>
+</html>
